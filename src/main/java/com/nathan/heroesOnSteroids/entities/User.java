@@ -15,6 +15,7 @@ public class User extends AbstractEntity {
 	private String lastname;
 	private String userName;
 	private String password;
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private List<Hero> heroes;
 

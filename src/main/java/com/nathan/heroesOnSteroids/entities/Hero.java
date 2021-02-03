@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.nathan.heroesOnSteroids.enums.Superpower;
@@ -15,8 +16,13 @@ import com.nathan.heroesOnSteroids.enums.Superpower;
 public class Hero extends AbstractEntity {
 
 	private String name;
+	
+	@OneToOne
+	@JoinColumn(name = "image_id")
 	private ImageModel imageModel;
+	
 	private EnumSet<Superpower> superpowers = EnumSet.noneOf(Superpower.class);
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private User user;
