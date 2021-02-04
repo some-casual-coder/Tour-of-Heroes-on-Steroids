@@ -41,12 +41,12 @@ public class HeroRestController {
 	}
 
 	@GetMapping
-	public Hero findById(@RequestParam Long id) {
+	public Hero findById(@RequestParam Long id) throws IOException {
 		return heroService.findById(id);
 	}
 
 	@GetMapping
-	public Hero findByName(@RequestParam String name) {
+	public Hero findByName(@RequestParam String name) throws IOException {
 		return heroService.findByName(name);
 	}
 

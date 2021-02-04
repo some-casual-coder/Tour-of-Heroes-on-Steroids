@@ -17,9 +17,9 @@ public interface HeroService {
 
 	void delete(Long id);
 
-	Hero findById(Long id);
+	Hero findById(Long id) throws IOException;
 
-	Hero findByName(String name);
+	Hero findByName(String name) throws IOException;
 
 	List<Hero> findAll();
 

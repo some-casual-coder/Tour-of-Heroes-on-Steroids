@@ -2,12 +2,14 @@ package com.nathan.heroesOnSteroids.services;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.nathan.heroesOnSteroids.entities.Hero;
@@ -24,6 +26,7 @@ public class ImageModelServiceImpl implements ImageModelService {
 	HeroService heroService;
 
 	@Override
+	@Transactional
 	public ImageModel uploadImage(MultipartFile file, Long id) throws IOException {
 		ImageModel img = new ImageModel(file.getOriginalFilename(), file.getContentType(),
 				compressBytes(file.getBytes()));
@@ -31,6 +34,13 @@ public class ImageModelServiceImpl implements ImageModelService {
 		img.setHero(hero);
 		imageModelRepo.save(img);
 		return img;
+	}
+
+	@Override
+	public ImageModel processImage(String name) throws IOException {
+		final Optional<ImageModel> img = imageModelRepo.findByName(name);
+		ImageModel newImg = new ImageModel(img.get().getName(), img.get().getType(), unCompressBytes(img.get().getImgData()));
+		return newImg;
 	}
 
 	// Compress the image

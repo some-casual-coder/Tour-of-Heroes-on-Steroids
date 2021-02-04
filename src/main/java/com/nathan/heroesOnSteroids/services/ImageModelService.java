@@ -13,5 +13,7 @@ public interface ImageModelService {
 	byte[] unCompressBytes(byte[] data);
 
 	ImageModel uploadImage(MultipartFile file, Long id) throws IOException;
+	
+	ImageModel processImage(String name) throws IOException;
 
 }

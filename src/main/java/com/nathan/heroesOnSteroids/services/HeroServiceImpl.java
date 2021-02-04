@@ -11,6 +11,7 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.nathan.heroesOnSteroids.entities.Hero;
@@ -47,13 +48,17 @@ public class HeroServiceImpl implements HeroService {
 	}
 
 	@Override
-	public Hero findById(Long id) {
-		return heroRepo.findById(id).orElseThrow(() -> new EntityNotFoundException(id.toString()));
+	public Hero findById(Long id) throws IOException {
+		Hero hero = heroRepo.findById(id).orElseThrow(() -> new EntityNotFoundException(id.toString()));
+		hero.setImageModel(imageModelService.processImage(hero.getImageModel().getName()));
+		return hero;
 	}
 
 	@Override
-	public Hero findByName(String name) {
-		return heroRepo.findByName(name);
+	public Hero findByName(String name) throws IOException {
+		Hero hero = heroRepo.findByName(name);
+		hero.setImageModel(imageModelService.processImage(hero.getImageModel().getName()));
+		return hero;
 	}
 
 	@Override
@@ -63,6 +68,7 @@ public class HeroServiceImpl implements HeroService {
 
 	@Override
 	@Async
+	@Transactional
 	public Hero saveFromRawDetails(String name, MultipartFile file, List<String> superpowers, Long user_id)
 			throws IOException {
 		Hero hero = new Hero();
